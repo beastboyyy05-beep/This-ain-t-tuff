@@ -1,4 +1,4 @@
-<!doctype html>
+            <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -108,14 +108,14 @@
     /* Background image */
     #bg-image2 {
       position: absolute;
-      width: 150px; /* Smaller than 200px */
+      width: 50px; /* A lot smaller than 150px */
       height: auto;
       opacity: 0.7;
       z-index: 1; /* Overlay content */
       display: none; /* Hidden by default, shown via JS */
     }
     #bg-image2.active {
-      display: block; /* Shown when prediction starts */
+      display: block; /* Shown when messages start */
     }
     #bg-image2 {
       bottom: 10px;
@@ -182,10 +182,12 @@
       result.textContent = '';
       textLine.textContent = '';
       spinner.style.display = 'inline-block';
-      bgImage.classList.add('active'); // Show the image when prediction starts
 
       let index = 0;
       const interval = setInterval(() => {
+        if (index === 0) {
+          bgImage.classList.add('active'); // Show image when messages start
+        }
         showMessage(msgs[index]);
         index++;
         if (index >= msgs.length) {
@@ -198,7 +200,7 @@
             result.style.opacity = 1;
             startBtn.disabled = false;
             yearInput.focus();
-            bgImage.classList.remove('active'); // Hide the image after prediction
+            bgImage.classList.remove('active'); // Hide image after prediction
           }, 800);
         }
       }, 2000);
