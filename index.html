@@ -1,4 +1,4 @@
-      <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -15,7 +15,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Prevent scrollbars from images */
+      overflow: hidden;
     }
     .container {
       position: relative;
@@ -76,7 +76,7 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background: #000; /* Solid black background for middle part */
+      background: #000; /* Solid black background */
     }
     .result {
       margin-top: 15px;
@@ -108,10 +108,11 @@
     /* Background images */
     #bg-image2, #bg-image3 {
       position: absolute;
-      width: 100px; /* Small size */
+      width: 100px;
       height: auto;
       opacity: 0.7;
       z-index: -1; /* Behind content */
+      border: 2px solid red; /* Debug aid */
     }
     #bg-image2 {
       bottom: 10px;
