@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Predicting The 69th Year</title>
+  <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: #0b0b0d;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      max-width: 500px;
+      text-align: center;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 8px 14px;
+      font-size: 16px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    .prediction-title {
+      font-size: 18px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .prediction-box {
+      margin-top: 10px;
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,0.2);
+      min-height: 100px;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 22px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: #121217;
+      border-radius: 8px;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* Loading spinner */
+    .spinner {
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin-top: 15px;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enter Any Year</h1>
+    <input id="yearInput" type="number" min="0" placeholder="Enter" />
+    <button id="startBtn">Start prediction</button>
+
+    <div class="prediction-title">Predicting The 69th Year</div>
+    <div class="prediction-box" id="predictionBox">
+      <div id="textLine"></div>
+      <div class="spinner" id="spinner"></div>
+    </div>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const msgs = [
+      "Trying to Calculate",
+      "Does your mom know what you do online",
+      "You naughty being",
+      "Calculating The Universe",
+      "I am Almost there ",
+      "I love 69",
+      "Almost done..."
+    ];
+
+    const yearInput = document.getElementById('yearInput');
+    const startBtn = document.getElementById('startBtn');
+    const predictionBox = document.getElementById('predictionBox');
+    const result = document.getElementById('result');
+    const textLine = document.getElementById('textLine');
+    const spinner = document.getElementById('spinner');
+
+    startBtn.addEventListener('click', () => {
+      const currentYear = parseInt(yearInput.value);
+      if (isNaN(currentYear) || currentYear <= 0) {
+        alert('Please enter a valid year.');
+        return;
+      }
+
+      result.textContent = '';
+      textLine.textContent = '';
+      spinner.style.display = 'inline-block'; // show spinner
+
+      let index = 0;
+
+      const interval = setInterval(() => {
+        textLine.textContent = msgs[index];
+        index++;
+        if (index >= msgs.length) {
+          clearInterval(interval);
+          spinner.style.display = 'none'; // hide spinner
+          setTimeout(() => {
+            const predictedYear = currentYear + 69;
+            textLine.textContent = '';
+            result.textContent = `✅ The 69th year will be: ${predictedYear}`;
+          }, 800);
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
