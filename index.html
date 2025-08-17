@@ -1,4 +1,4 @@
-<!doctype html>
+      <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -10,26 +10,56 @@
       background: #0b0b0d;
       color: white;
       font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      overflow: hidden; /* Prevent scrollbars from images */
     }
     .container {
+      position: relative;
       max-width: 500px;
       text-align: center;
+      z-index: 1; /* Ensure content is above images */
+    }
+    h1 {
+      margin-bottom: 20px;
     }
     input {
-      padding: 8px;
+      padding: 10px;
       font-size: 16px;
       margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      text-align: center;
+      outline: none;
     }
     button {
-      padding: 8px 14px;
+      padding: 10px 16px;
       font-size: 16px;
       margin-left: 5px;
       cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      color: #0b0b0d;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    button:hover:not(:disabled) {
+      background: #ddd;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .box {
+      margin: 15px auto;
+      padding: 20px;
+      border-radius: 12px;
+      background: #121217;
+      box-shadow: 0 0 10px rgba(255,255,255,0.15), inset 0 0 20px rgba(255,255,255,0.05);
     }
     .prediction-title {
       font-size: 18px;
@@ -38,10 +68,7 @@
       font-weight: bold;
     }
     .prediction-box {
-      margin-top: 10px;
-      padding: 20px;
-      border: 1px solid rgba(255,255,255,0.2);
-      min-height: 100px;
+      min-height: 120px;
       font-family: 'Luckiest Guy', cursive;
       font-size: 22px;
       position: relative;
@@ -49,91 +76,130 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      background: #121217;
-      border-radius: 8px;
+      background: #000; /* Solid black background for middle part */
     }
     .result {
       margin-top: 15px;
       font-size: 20px;
       font-weight: bold;
+      color: #6effa3;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
     }
-
-    /* Loading spinner */
+    #textLine {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
     .spinner {
       border: 4px solid rgba(255,255,255,0.2);
       border-top: 4px solid #fff;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       animation: spin 1s linear infinite;
       margin-top: 15px;
       display: none;
+      box-shadow: 0 0 15px rgba(255,255,255,0.6);
     }
-
     @keyframes spin {
-      0% { transform: rotate(0deg);}
-      100% { transform: rotate(360deg);}
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    /* Background images */
+    #bg-image2, #bg-image3 {
+      position: absolute;
+      width: 100px; /* Small size */
+      height: auto;
+      opacity: 0.7;
+      z-index: -1; /* Behind content */
+    }
+    #bg-image2 {
+      bottom: 10px;
+      right: 10px; /* Bottom right corner */
+    }
+    #bg-image3 {
+      top: 10px;
+      left: 10px; /* Top left corner */
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Enter Any Year</h1>
-    <input id="yearInput" type="number" min="0" placeholder="Enter" />
-    <button id="startBtn">Start prediction</button>
+    <div class="box">
+      <input id="yearInput" type="number" min="0" inputmode="numeric" placeholder="Enter" />
+      <button id="startBtn">Start prediction</button>
+    </div>
 
     <div class="prediction-title">Predicting The 69th Year</div>
-    <div class="prediction-box" id="predictionBox">
+    <div class="box prediction-box" id="predictionBox">
       <div id="textLine"></div>
       <div class="spinner" id="spinner"></div>
     </div>
+
     <div class="result" id="result"></div>
+
+    <!-- Background images (second and third only) -->
+    <img src="image2.jpg" id="bg-image2" alt="Background Image 2">
+    <img src="image3.jpg" id="bg-image3" alt="Background Image 3">
   </div>
 
   <script>
     const msgs = [
-      "Trying to Calculate",
-      "I Love Baddies",
+      "Trying to Calculate...",
+      "I Love Baddies 💖",
       "Stop being cute, it’s distracting me",
-      "You're Proof Evolution can go backwards" ,
-      "You bring down the group IQ ",
-      "Your WiFi has more stability than you",
+      "You're proof evolution can go backwards",
+      "You bring down the group IQ 📉",
+      "Your WiFi has more stability than you 📶",
       "Almost done..."
     ];
 
     const yearInput = document.getElementById('yearInput');
     const startBtn = document.getElementById('startBtn');
-    const predictionBox = document.getElementById('predictionBox');
     const result = document.getElementById('result');
     const textLine = document.getElementById('textLine');
     const spinner = document.getElementById('spinner');
 
+    function showMessage(msg) {
+      textLine.style.opacity = 0;
+      setTimeout(() => {
+        textLine.textContent = msg;
+        textLine.style.opacity = 1;
+      }, 200);
+    }
+
     startBtn.addEventListener('click', () => {
       const currentYear = parseInt(yearInput.value);
-      if (isNaN(currentYear) || currentYear <= 0) {
-        alert('Please enter a valid year.');
+      if (isNaN(currentYear) || currentYear <= 0 || currentYear > 9999) {
+        result.textContent = '🚫 Please enter a year between 1 and 9999.';
+        result.style.opacity = 1;
         return;
       }
 
+      startBtn.disabled = true;
+      result.style.opacity = 0;
       result.textContent = '';
       textLine.textContent = '';
-      spinner.style.display = 'inline-block'; // show spinner
+      spinner.style.display = 'inline-block';
 
       let index = 0;
-
       const interval = setInterval(() => {
-        textLine.textContent = msgs[index];
+        showMessage(msgs[index]);
         index++;
         if (index >= msgs.length) {
           clearInterval(interval);
-          spinner.style.display = 'none'; // hide spinner
+          spinner.style.display = 'none';
           setTimeout(() => {
             const predictedYear = currentYear + 69;
             textLine.textContent = '';
             result.textContent = `✅ The 69th year will be: ${predictedYear}`;
+            result.style.opacity = 1;
+            startBtn.disabled = false;
+            yearInput.focus();
           }, 800);
         }
-      }, 1000);
+      }, 2000);
     });
   </script>
 </body>
