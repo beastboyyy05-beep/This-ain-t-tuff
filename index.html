@@ -1,4 +1,4 @@
-                        <!doctype html>
+  <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -108,7 +108,7 @@
     /* Background image */
     #bg-image2 {
       position: absolute;
-      width: 100px; /* Doubled from 50px */
+      width: 200px; /* Increased from 100px to 200px */
       height: auto;
       opacity: 0.7;
       z-index: 1; /* Overlay content */
@@ -118,7 +118,7 @@
       display: block; /* Shown when messages start */
     }
     #bg-image2 {
-      bottom: 50px; /* Positioned a bit higher than 10px */
+      bottom: 50px; /* Positioned higher */
       right: 10px; /* Bottom right corner */
     }
   </style>
@@ -172,4 +172,39 @@
     startBtn.addEventListener('click', () => {
       const currentYear = parseInt(yearInput.value);
       if (isNaN(currentYear) || currentYear <= 0 || currentYear > 9999) {
-        result.textContent
+        result.textContent = '🚫 Please enter a year between 1 and 9999.';
+        result.style.opacity = 1;
+        return;
+      }
+
+      startBtn.disabled = true;
+      result.style.opacity = 0;
+      result.textContent = '';
+      textLine.textContent = '';
+      spinner.style.display = 'inline-block';
+
+      let index = 0;
+      const interval = setInterval(() => {
+        if (index === 0) {
+          bgImage.classList.add('active'); // Show image when messages start
+        }
+        showMessage(msgs[index]);
+        index++;
+        if (index >= msgs.length) {
+          clearInterval(interval);
+          spinner.style.display = 'none';
+          setTimeout(() => {
+            const predictedYear = currentYear + 69;
+            textLine.textContent = '';
+            result.textContent = `✅ The 69th year will be: ${predictedYear}`;
+            result.style.opacity = 1;
+            startBtn.disabled = false;
+            yearInput.focus();
+            bgImage.classList.remove('active'); // Hide image after prediction
+          }, 800);
+        }
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
