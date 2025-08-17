@@ -1,4 +1,4 @@
-                  <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -21,7 +21,7 @@
       position: relative;
       max-width: 500px;
       text-align: center;
-      z-index: 0; /* Lower z-index to allow images to overlay */
+      z-index: 0; /* Lower z-index to allow image to overlay */
     }
     h1 {
       margin-bottom: 20px;
@@ -105,21 +105,21 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    /* Background images (now overlaying) */
-    #bg-image2, #bg-image3 {
+    /* Background image */
+    #bg-image2 {
       position: absolute;
-      width: 200px; /* Doubled from 100px */
+      width: 150px; /* Smaller than 200px */
       height: auto;
       opacity: 0.7;
-      z-index: 1; /* Higher than container's z-index to overlay content */
+      z-index: 1; /* Overlay content */
+      display: none; /* Hidden by default, shown via JS */
+    }
+    #bg-image2.active {
+      display: block; /* Shown when prediction starts */
     }
     #bg-image2 {
       bottom: 10px;
       right: 10px; /* Bottom right corner */
-    }
-    #bg-image3 {
-      top: 10px;
-      left: 10px; /* Top left corner */
     }
   </style>
 </head>
@@ -139,9 +139,8 @@
 
     <div class="result" id="result"></div>
 
-    <!-- Background images (second and third only) -->
+    <!-- Background image (second only) -->
     <img src="image2.jpg" id="bg-image2" alt="Background Image 2">
-    <img src="image3.jpg" id="bg-image3" alt="Background Image 3">
   </div>
 
   <script>
@@ -160,6 +159,7 @@
     const result = document.getElementById('result');
     const textLine = document.getElementById('textLine');
     const spinner = document.getElementById('spinner');
+    const bgImage = document.getElementById('bg-image2');
 
     function showMessage(msg) {
       textLine.style.opacity = 0;
@@ -182,6 +182,7 @@
       result.textContent = '';
       textLine.textContent = '';
       spinner.style.display = 'inline-block';
+      bgImage.classList.add('active'); // Show the image when prediction starts
 
       let index = 0;
       const interval = setInterval(() => {
@@ -197,10 +198,11 @@
             result.style.opacity = 1;
             startBtn.disabled = false;
             yearInput.focus();
+            bgImage.classList.remove('active'); // Hide the image after prediction
           }, 800);
         }
       }, 2000);
     });
   </script>
 </body>
-            </html>
+</html>
